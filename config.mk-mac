@@ -2,7 +2,7 @@
 # these can be set on the command line or config.mk
 # paths in the various _DIR variables should be absolute paths, not relative
 
-TEC_LIBS=$(HOME)/CHDK/teclibs
+TEC_LIBS=$(TOPDIR)/../teclibs
 
 # use Lua 5.2 
 # Lua 5.1 is no longer supported by chdkptp, but it might work
@@ -35,7 +35,7 @@ READLINE_SUPPORT=1
 
 # for self built lua, use something like
 LUA_INCLUDE_DIR=$(TEC_LIBS)/lua52/include
-LUA_LIB_DIR=$(HOME)/CHDK/chdkptp/macosxiupcdlualibs
+LUA_LIB_DIR=$(TOPDIR)/macosxiupcdlualibs
 
 # compile with debug support 
 DEBUG=1

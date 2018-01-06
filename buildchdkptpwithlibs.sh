@@ -4,10 +4,9 @@
 # Also prefer to have freetype2 as well
 #
 
-builddir=$HOME/CHDK
+builddir=`pwd`
 osdir=`sw_vers -productVersion | awk '{printf("%s%s\n",substr($1,1,2),substr($1,4,2))}'`
 
-if false ; then
 # Get archives
 mkdir -p $builddir/archives
 cd $builddir/archives
@@ -16,7 +15,6 @@ wget https://sourceforge.net/projects/iup/files/3.21/Docs%20and%20Sources/iup-3.
 wget https://sourceforge.net/projects/imtoolkit/files/3.12/Docs%20and%20Sources/im-3.12_Sources.zip
 wget https://sourceforge.net/projects/canvasdraw/files/5.11/Docs%20and%20Sources/cd-5.11_Sources.zip
 wget http://www.lua.org/ftp/lua-5.2.4.tar.gz
-fi
 
 # Create teclibs dir
 cd $builddir
