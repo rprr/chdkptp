@@ -1,1 +1,27 @@
-Building chdkptp with GUI for Mac
+Building chdkptp with GUI for Mac OS X 10.13 using Macports system.
+
+Prerequisites
+-- Some prerequisites such as gtk etc will be needed.
+
+chdkptp-macosx-10.13-binary.tgz
+-- If you are lucky, you can download just this file and it may work. You
+will need to modify chdkptp-mac.sh.
+
+buildchdkptpwithlibs.sh  
+-- Is the full script that downloads everything
+and builds all. It builds lua, freetype, im, cd, iup as well as gets
+chdkptp from SVN.
+
+patchfile-teclibs-macports 
+-- patchfile needed for freetype, iup, cd, im
+
+macosxiupcdlualibs.tgz 
+-- This file contains the build libraries for iup,
+cd, lua needed by chdkptp. You can skip to this step and just use these 
+precompiled libraries.
+
+chdkptp-mac.sh 
+-- shell scrip wrapper for chdkptp (with GUI) 
+
+config.mk-mac 
+-- Mac config.mk file for chdkptp
