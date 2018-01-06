@@ -21,7 +21,7 @@ cd, lua needed by chdkptp. You can skip to this step and just use these
 precompiled libraries.
 
 chdkptp-mac.sh 
--- shell scrip wrapper for chdkptp (with GUI) 
+-- shell script wrapper for chdkptp (with GUI) 
 
 config.mk-mac 
 -- Mac config.mk file for chdkptp
