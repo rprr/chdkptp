@@ -1,0 +1,457 @@
+diff -urN teclibs/cd/tecmake.mak teclibsnew/cd/tecmake.mak
+--- teclibs/cd/tecmake.mak	2016-09-14 08:43:10.000000000 -1000
++++ teclibsnew/cd/tecmake.mak	2018-01-05 19:47:27.000000000 -1000
+@@ -565,7 +565,11 @@
+   #Homebrew
+   #FREETYPE_INC := /usr/local/include/freetype2
+   #Fink
+-  FREETYPE_INC := /sw/include/freetype2
++  #FREETYPE_INC := /sw/include/freetype2
++  #MacPorts
++  #FREETYPE_INC := /opt/local/include/freetype2
++  #Custom
++  FREETYPE_INC := $(HOME)/CHDK/teclibs/freetype/include
+ endif
+ 
+ # Definitions for GTK
+@@ -577,9 +581,9 @@
+   # Homebrew GTK port
+   #  GTK = /usr/local
+   # Fink GTK port
+-    GTK = /sw
++  #  GTK = /sw
+   # MacPorts GTK
+-  #  GTK = /opt/local
++    GTK = /opt/local
+   # GTK-OSX Framework
+   #   GTK := /gtk/inst
+   else
+@@ -726,8 +730,11 @@
+   #STDINCS += /usr/local/include
+   #LDIR += /usr/local/lib
+   #Fink
+-  STDINCS += /sw/include
+-  LDIR += /sw/lib
++  #STDINCS += /sw/include
++  #LDIR += /sw/lib
++  #Macports
++  STDINCS += /opt/local/include
++  LDIR += /opt/local/lib
+   
+   UNIX_BSD = Yes
+   X11_LIBS := Xp Xext X11
+@@ -752,10 +759,10 @@
+       #LFLAGS += -dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib
+     endif
+   endif
+-  ifdef USE_OPENMP
+-    STDFLAGS += -fopenmp
+-    LIBS += gomp
+-  endif
++#  ifdef USE_OPENMP
++#    STDFLAGS += -fopenmp
++#    LIBS += gomp
++#  endif
+ endif
+ 
+ ifneq ($(findstring FreeBSD, $(TEC_UNAME)), )
+@@ -1273,15 +1280,15 @@
+     CHECK_GTK = Yes
+     ifneq ($(findstring MacOS, $(TEC_UNAME)), )
+   # Option 1 - Fink GTK port
+-      LDIR += $(GTK)/lib
+-      ifndef NO_OVERRIDE
+-        override USE_X11 = Yes
+-      endif
+-      ifdef GTK_MAC
+-        LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
+-      else
+-        LIBS += gtk-x11-$(GTKSFX).0 gdk-x11-$(GTKSFX).0 pangox-1.0
+-      endif
++  #    LDIR += $(GTK)/lib
++  #    ifndef NO_OVERRIDE
++  #      override USE_X11 = Yes
++  #    endif
++  #    ifdef GTK_MAC
++  #      LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
++  #    else
++  #      LIBS += gtk-x11-$(GTKSFX).0 gdk-x11-$(GTKSFX).0 pangox-1.0
++  #    endif
+   # Option 2 - Imendio Framework
+   #   STDINCS += /Library/Frameworks/Gtk.framework/Headers
+   #   STDINCS += /Library/Frameworks/GLib.framework/Headers
+@@ -1291,6 +1298,16 @@
+   #   LDIR += $(GTK)/lib
+   #   LFLAGS += -framework Carbon
+   #   LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pangoft2-1.0
++  # Option 4 - Macport GTK port
++      LDIR += $(GTK)/lib
++      ifndef NO_OVERRIDE
++        override USE_X11 = Yes
++      endif
++      ifdef GTK_MAC
++        LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
++      else
++        LIBS += gtk-$(GTKSFX).0 gdk-$(GTKSFX).0 pango-1.0
++      endif
+ 
+       LIBS += freetype
+     else
+diff -urN teclibs/freetype/tecmake.mak teclibsnew/freetype/tecmake.mak
+--- teclibs/freetype/tecmake.mak	2016-09-14 08:43:10.000000000 -1000
++++ teclibsnew/freetype/tecmake.mak	2018-01-05 19:47:33.000000000 -1000
+@@ -565,7 +565,11 @@
+   #Homebrew
+   #FREETYPE_INC := /usr/local/include/freetype2
+   #Fink
+-  FREETYPE_INC := /sw/include/freetype2
++  #FREETYPE_INC := /sw/include/freetype2
++  #MacPorts
++  #FREETYPE_INC := /opt/local/include/freetype2
++  #Custom
++  FREETYPE_INC := $(HOME)/CHDK/teclibs/freetype/include
+ endif
+ 
+ # Definitions for GTK
+@@ -577,9 +581,9 @@
+   # Homebrew GTK port
+   #  GTK = /usr/local
+   # Fink GTK port
+-    GTK = /sw
++  #  GTK = /sw
+   # MacPorts GTK
+-  #  GTK = /opt/local
++    GTK = /opt/local
+   # GTK-OSX Framework
+   #   GTK := /gtk/inst
+   else
+@@ -726,8 +730,11 @@
+   #STDINCS += /usr/local/include
+   #LDIR += /usr/local/lib
+   #Fink
+-  STDINCS += /sw/include
+-  LDIR += /sw/lib
++  #STDINCS += /sw/include
++  #LDIR += /sw/lib
++  #Macports
++  STDINCS += /opt/local/include
++  LDIR += /opt/local/lib
+   
+   UNIX_BSD = Yes
+   X11_LIBS := Xp Xext X11
+@@ -752,10 +759,10 @@
+       #LFLAGS += -dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib
+     endif
+   endif
+-  ifdef USE_OPENMP
+-    STDFLAGS += -fopenmp
+-    LIBS += gomp
+-  endif
++#  ifdef USE_OPENMP
++#    STDFLAGS += -fopenmp
++#    LIBS += gomp
++#  endif
+ endif
+ 
+ ifneq ($(findstring FreeBSD, $(TEC_UNAME)), )
+@@ -1273,15 +1280,15 @@
+     CHECK_GTK = Yes
+     ifneq ($(findstring MacOS, $(TEC_UNAME)), )
+   # Option 1 - Fink GTK port
+-      LDIR += $(GTK)/lib
+-      ifndef NO_OVERRIDE
+-        override USE_X11 = Yes
+-      endif
+-      ifdef GTK_MAC
+-        LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
+-      else
+-        LIBS += gtk-x11-$(GTKSFX).0 gdk-x11-$(GTKSFX).0 pangox-1.0
+-      endif
++  #    LDIR += $(GTK)/lib
++  #    ifndef NO_OVERRIDE
++  #      override USE_X11 = Yes
++  #    endif
++  #    ifdef GTK_MAC
++  #      LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
++  #    else
++  #      LIBS += gtk-x11-$(GTKSFX).0 gdk-x11-$(GTKSFX).0 pangox-1.0
++  #    endif
+   # Option 2 - Imendio Framework
+   #   STDINCS += /Library/Frameworks/Gtk.framework/Headers
+   #   STDINCS += /Library/Frameworks/GLib.framework/Headers
+@@ -1291,6 +1298,16 @@
+   #   LDIR += $(GTK)/lib
+   #   LFLAGS += -framework Carbon
+   #   LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pangoft2-1.0
++  # Option 4 - Macport GTK port
++      LDIR += $(GTK)/lib
++      ifndef NO_OVERRIDE
++        override USE_X11 = Yes
++      endif
++      ifdef GTK_MAC
++        LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
++      else
++        LIBS += gtk-$(GTKSFX).0 gdk-$(GTKSFX).0 pango-1.0
++      endif
+ 
+       LIBS += freetype
+     else
+diff -urN teclibs/im/src/im_format_png.cpp teclibsnew/im/src/im_format_png.cpp
+--- teclibs/im/src/im_format_png.cpp	2016-06-02 08:08:14.000000000 -1000
++++ teclibsnew/im/src/im_format_png.cpp	2018-01-05 19:47:56.000000000 -1000
+@@ -15,7 +15,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ 
+-#include "png.h"
++#include "libpng/png.h"
+ 
+ 
+ static void png_user_read_fn(png_structp png_ptr, png_bytep buffer, png_size_t size)
+diff -urN teclibs/im/tecmake.mak teclibsnew/im/tecmake.mak
+--- teclibs/im/tecmake.mak	2016-09-14 08:43:10.000000000 -1000
++++ teclibsnew/im/tecmake.mak	2018-01-05 19:47:40.000000000 -1000
+@@ -565,7 +565,11 @@
+   #Homebrew
+   #FREETYPE_INC := /usr/local/include/freetype2
+   #Fink
+-  FREETYPE_INC := /sw/include/freetype2
++  #FREETYPE_INC := /sw/include/freetype2
++  #MacPorts
++  #FREETYPE_INC := /opt/local/include/freetype2
++  #Custom
++  FREETYPE_INC := $(HOME)/CHDK/teclibs/freetype/include
+ endif
+ 
+ # Definitions for GTK
+@@ -577,9 +581,9 @@
+   # Homebrew GTK port
+   #  GTK = /usr/local
+   # Fink GTK port
+-    GTK = /sw
++  #  GTK = /sw
+   # MacPorts GTK
+-  #  GTK = /opt/local
++    GTK = /opt/local
+   # GTK-OSX Framework
+   #   GTK := /gtk/inst
+   else
+@@ -726,8 +730,11 @@
+   #STDINCS += /usr/local/include
+   #LDIR += /usr/local/lib
+   #Fink
+-  STDINCS += /sw/include
+-  LDIR += /sw/lib
++  #STDINCS += /sw/include
++  #LDIR += /sw/lib
++  #Macports
++  STDINCS += /opt/local/include
++  LDIR += /opt/local/lib
+   
+   UNIX_BSD = Yes
+   X11_LIBS := Xp Xext X11
+@@ -752,10 +759,10 @@
+       #LFLAGS += -dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib
+     endif
+   endif
+-  ifdef USE_OPENMP
+-    STDFLAGS += -fopenmp
+-    LIBS += gomp
+-  endif
++#  ifdef USE_OPENMP
++#    STDFLAGS += -fopenmp
++#    LIBS += gomp
++#  endif
+ endif
+ 
+ ifneq ($(findstring FreeBSD, $(TEC_UNAME)), )
+@@ -1273,15 +1280,15 @@
+     CHECK_GTK = Yes
+     ifneq ($(findstring MacOS, $(TEC_UNAME)), )
+   # Option 1 - Fink GTK port
+-      LDIR += $(GTK)/lib
+-      ifndef NO_OVERRIDE
+-        override USE_X11 = Yes
+-      endif
+-      ifdef GTK_MAC
+-        LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
+-      else
+-        LIBS += gtk-x11-$(GTKSFX).0 gdk-x11-$(GTKSFX).0 pangox-1.0
+-      endif
++  #    LDIR += $(GTK)/lib
++  #    ifndef NO_OVERRIDE
++  #      override USE_X11 = Yes
++  #    endif
++  #    ifdef GTK_MAC
++  #      LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
++  #    else
++  #      LIBS += gtk-x11-$(GTKSFX).0 gdk-x11-$(GTKSFX).0 pangox-1.0
++  #    endif
+   # Option 2 - Imendio Framework
+   #   STDINCS += /Library/Frameworks/Gtk.framework/Headers
+   #   STDINCS += /Library/Frameworks/GLib.framework/Headers
+@@ -1291,6 +1298,16 @@
+   #   LDIR += $(GTK)/lib
+   #   LFLAGS += -framework Carbon
+   #   LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pangoft2-1.0
++  # Option 4 - Macport GTK port
++      LDIR += $(GTK)/lib
++      ifndef NO_OVERRIDE
++        override USE_X11 = Yes
++      endif
++      ifdef GTK_MAC
++        LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
++      else
++        LIBS += gtk-$(GTKSFX).0 gdk-$(GTKSFX).0 pango-1.0
++      endif
+ 
+       LIBS += freetype
+     else
+diff -urN teclibs/iup/tecmake.mak teclibsnew/iup/tecmake.mak
+--- teclibs/iup/tecmake.mak	2016-11-14 11:52:55.000000000 -1000
++++ teclibsnew/iup/tecmake.mak	2018-01-05 19:47:43.000000000 -1000
+@@ -565,7 +565,11 @@
+   #Homebrew
+   #FREETYPE_INC := /usr/local/include/freetype2
+   #Fink
+-  FREETYPE_INC := /sw/include/freetype2
++  #FREETYPE_INC := /sw/include/freetype2
++  #MacPorts
++  #FREETYPE_INC := /opt/local/include/freetype2
++  #Custom
++  FREETYPE_INC := $(HOME)/CHDK/teclibs/freetype/include
+ endif
+ 
+ # Definitions for GTK
+@@ -577,9 +581,9 @@
+   # Homebrew GTK port
+   #  GTK = /usr/local
+   # Fink GTK port
+-    GTK = /sw
++  #  GTK = /sw
+   # MacPorts GTK
+-  #  GTK = /opt/local
++    GTK = /opt/local
+   # GTK-OSX Framework
+   #   GTK := /gtk/inst
+   else
+@@ -726,8 +730,11 @@
+   #STDINCS += /usr/local/include
+   #LDIR += /usr/local/lib
+   #Fink
+-  STDINCS += /sw/include
+-  LDIR += /sw/lib
++  #STDINCS += /sw/include
++  #LDIR += /sw/lib
++  #Macports
++  STDINCS += /opt/local/include
++  LDIR += /opt/local/lib
+   
+   UNIX_BSD = Yes
+   X11_LIBS := Xp Xext X11
+@@ -752,10 +759,10 @@
+       #LFLAGS += -dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib
+     endif
+   endif
+-  ifdef USE_OPENMP
+-    STDFLAGS += -fopenmp
+-    LIBS += gomp
+-  endif
++#  ifdef USE_OPENMP
++#    STDFLAGS += -fopenmp
++#    LIBS += gomp
++#  endif
+ endif
+ 
+ ifneq ($(findstring FreeBSD, $(TEC_UNAME)), )
+@@ -929,25 +936,6 @@
+   endif
+ endif
+ 
+-ifdef USE_IUPWEB
+-  override USE_IUP = Yes
+-  override LINK_WEBKIT = Yes
+-  
+-  ifdef USE_IUPLUA
+-    ifdef USE_STATIC
+-      SLIB += $(IUPLUA_LIB)/libiupluaweb$(LIBLUA_SFX).a
+-    else
+-      LIBS += iupluaweb$(LIBLUA_SFX)
+-    endif
+-  endif
+-  
+-  ifdef USE_STATIC
+-    SLIB += $(IUP_LIB)/libiupweb.a
+-  else
+-    LIBS += iupweb
+-  endif
+-endif
+-
+ ifdef USE_IMLUA
+   override USE_IM = Yes
+   IMLUA_LIB ?= $(IM)/lib/$(TEC_UNAME_LIBLUA_DIR)
+@@ -1193,22 +1181,6 @@
+   INCLUDES += $(IM_INC)
+ endif
+ 
+-ifdef LINK_WEBKIT
+-  ifneq ($(findstring Linux4, $(TEC_UNAME)), )
+-    LIBS += webkitgtk-3.0
+-  else 
+-    ifneq ($(findstring Linux3, $(TEC_UNAME)), )
+-      ifneq ($(findstring Linux31, $(TEC_UNAME)), )
+-        LIBS += webkitgtk-3.0
+-      else
+-        LIBS += webkitgtk-1.0
+-      endif
+-    else
+-      LIBS += webkit-1.0
+-    endif
+-  endif
+-endif
+-
+ ifdef USE_FTGL
+   LINK_FTGL = Yes
+   USE_FREETYPE = Yes
+@@ -1308,15 +1280,15 @@
+     CHECK_GTK = Yes
+     ifneq ($(findstring MacOS, $(TEC_UNAME)), )
+   # Option 1 - Fink GTK port
+-      LDIR += $(GTK)/lib
+-      ifndef NO_OVERRIDE
+-        override USE_X11 = Yes
+-      endif
+-      ifdef GTK_MAC
+-        LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
+-      else
+-        LIBS += gtk-x11-$(GTKSFX).0 gdk-x11-$(GTKSFX).0 pangox-1.0
+-      endif
++  #    LDIR += $(GTK)/lib
++  #    ifndef NO_OVERRIDE
++  #      override USE_X11 = Yes
++  #    endif
++  #    ifdef GTK_MAC
++  #      LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
++  #    else
++  #      LIBS += gtk-x11-$(GTKSFX).0 gdk-x11-$(GTKSFX).0 pangox-1.0
++  #    endif
+   # Option 2 - Imendio Framework
+   #   STDINCS += /Library/Frameworks/Gtk.framework/Headers
+   #   STDINCS += /Library/Frameworks/GLib.framework/Headers
+@@ -1326,6 +1298,16 @@
+   #   LDIR += $(GTK)/lib
+   #   LFLAGS += -framework Carbon
+   #   LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pangoft2-1.0
++  # Option 4 - Macport GTK port
++      LDIR += $(GTK)/lib
++      ifndef NO_OVERRIDE
++        override USE_X11 = Yes
++      endif
++      ifdef GTK_MAC
++        LIBS += gtk-quartz-$(GTKSFX).0 gdk-quartz-$(GTKSFX).0 pango???-1.0
++      else
++        LIBS += gtk-$(GTKSFX).0 gdk-$(GTKSFX).0 pango-1.0
++      endif
+ 
+       LIBS += freetype
+     else

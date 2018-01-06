@@ -1,0 +1,12 @@
+/*
+!.gitignore
+OLD	      
+chdk	      
+!config.mk-mac
+teclibs
+archives      
+chdkptp	      
+!macosxiupcdlualibs.tgz
+!buildchdkptpwithlibs.sh  
+!chdkptp-mac.sh  
+!patchfile-teclibs-macports
