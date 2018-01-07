@@ -7,6 +7,7 @@
 builddir=`pwd`
 osdir=`sw_vers -productVersion | awk '{printf("%s%s\n",substr($1,1,2),substr($1,4,2))}'`
 
+if false ; then
 # Get archives
 mkdir -p $builddir/archives
 cd $builddir/archives
@@ -54,26 +55,28 @@ export CPATH=/opt/local/include/gtk-3.0/unix-print
 
 # Build freetype
 cd $builddir/teclibs/freetype
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes
 
 # Build im
 cd $builddir/teclibs/im
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes
 
 # Build cd
-cd $builddir/teclibs/cd
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes
+cd $builddir/teclibs/cd/src
+make BUILD_DYLIB=Yes USE_LUA52=Yes  USE_PKGCONFIG=Yes USE_GTK3=Yes 
+
 
 # Build iup libs
 cd $builddir/teclibs/iup
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes iup
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes iupcd
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes iupcontrols
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iup
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupcd
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupcontrols
 
 cd $builddir/teclibs/iup/srclua5
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes iuplua
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes iupluacd
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes iupluacontrols
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iuplua
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupluacd
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupluacontrols
+fi
 
 # Copy the libs into archive
 \rm -fr $builddir/teclibs/macosxiupcdlualibs
