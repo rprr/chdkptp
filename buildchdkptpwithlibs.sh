@@ -11,17 +11,18 @@ if false ; then
 # Get archives
 mkdir -p $builddir/archives
 cd $builddir/archives
+\rm *
 wget https://sourceforge.net/projects/iup/files/3.21/Docs%20and%20Sources/freetype-2.6.3_Sources.zip
 wget https://sourceforge.net/projects/iup/files/3.21/Docs%20and%20Sources/iup-3.21_Sources.zip
 wget https://sourceforge.net/projects/imtoolkit/files/3.12/Docs%20and%20Sources/im-3.12_Sources.zip
 wget https://sourceforge.net/projects/canvasdraw/files/5.11/Docs%20and%20Sources/cd-5.11_Sources.zip
 wget http://www.lua.org/ftp/lua-5.2.4.tar.gz
+fi
 
 # Create teclibs dir
 cd $builddir
 mkdir -p teclibs
 cd teclibs
-
 
 # Build Lua
 cd $builddir/teclibs
@@ -50,6 +51,9 @@ unzip ../archives/im-3.12_Sources.zip
 # patch the above files for tecmake
 patch -p1 < ../patchfile-teclibs-macports
 
+export USE_MACOS_OPENGL=Yes      # To use the OpenGL framework
+export GTK_BASE=/opt/local       # For MacPorts
+
 # Need unixprint from macports 
 export CPATH=/opt/local/include/gtk-3.0/unix-print
 
@@ -63,20 +67,18 @@ make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes
 
 # Build cd
 cd $builddir/teclibs/cd/src
-make BUILD_DYLIB=Yes USE_LUA52=Yes  USE_PKGCONFIG=Yes USE_GTK3=Yes 
-
+make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes 
 
 # Build iup libs
 cd $builddir/teclibs/iup
 make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iup
 make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupcd
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupcontrols
+#make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupcontrols
 
 cd $builddir/teclibs/iup/srclua5
 make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iuplua
 make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupluacd
-make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupluacontrols
-fi
+#make BUILD_DYLIB=Yes USE_GTK3=Yes USE_LUA52=Yes USE_PKGCONFIG=Yes iupluacontrols
 
 # Copy the libs into archive
 \rm -fr $builddir/teclibs/macosxiupcdlualibs
